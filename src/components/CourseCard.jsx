@@ -5,7 +5,7 @@ import { UserData } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios'; // Ensure axios is imported
-
+import {motion} from 'framer-motion'
 function CourseCard({ course }) {
   const navigate = useNavigate();
   const { isAuth, user } = UserData();
@@ -47,60 +47,95 @@ function CourseCard({ course }) {
   };
 
   return (
-    <div className="bg-white  rounded-lg shadow-lg p-5 transition-transform transform hover:scale-105 hover:shadow-2xl">
-      <img className="w-full h-48 object-contain rounded-md" src={`${server}/${course.image}`} alt={course.title} />
-      <div className="py-4">
-        <h3 className="font-bold text-xl mb-2 text-gray-800">{course.title}</h3>
-        <p className="text-gray-700">Instructor: {course.createdBy}</p>
-        <p className="text-gray-700">Duration: {course.duration} weeks</p>
-        <p className="text-gray-900 font-semibold">Price: ₹{course.price}</p>
+<motion.div
+  whileHover={{ scale: 1.02, translateY: -5 }}
+  whileTap={{ scale: 0.98 }}
+  className="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-xl transform transition-all duration-300 relative"
+>
+  {/* Top Badge */}
+  {course.popular && (
+    <div className="absolute top-3 left-3 bg-[#4660EC] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">
+      Popular
+    </div>
+  )}
 
-        {isAuth ? (
-          <>
-            {user && user.role !== 'admin' ? (
-              user.subscription.includes(course._id) ? (
-                <button
-                  onClick={() => navigate(`/course/study/${course._id}`)}
-                  className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Study
-                </button>
-              ) : (
-                <button
-                  onClick={() => navigate(`/course/${course._id}`)}
-                  className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Buy Now
-                </button>
-              )
-            ) : (
-              <button
-                onClick={() => navigate(`/course/study/${course._id}`)}
-                className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Study
-              </button>
-            )}
-          </>
+  {/* Course Image */}
+  <img
+    className="w-full h-48 object-cover rounded-md mb-4"
+    src={`${server}/${course.image}`}
+    alt={course.title}
+  />
+
+  {/* Course Details */}
+  <div>
+    <h3 className="font-bold text-lg mb-2 text-[#4660EC] tracking-tight truncate">
+      {course.title}
+    </h3>
+    <p className="text-sm text-gray-600 mb-2">
+      <span className="font-medium">Instructor:</span> {course.createdBy}
+    </p>
+    <p className="text-sm text-gray-600 mb-2">
+      <span className="font-medium">Duration:</span> {course.duration} weeks
+    </p>
+    <p className="text-lg font-semibold mb-4 text-gray-800">
+      {course.price === 0 ? (
+        <span className="text-green-600">Free</span>
+      ) : (
+        `Price: ₹${course.price}`
+      )}
+    </p>
+
+    {/* Buttons */}
+    {isAuth ? (
+      <>
+        {user && user.role !== "admin" ? (
+          user.subscription.includes(course._id) ? (
+            <button
+              onClick={() => navigate(`/course/study/${course._id}`)}
+              className="w-full bg-[#4660EC] hover:bg-[#324db0] text-white font-medium py-2 px-4 rounded-lg transition-all"
+            >
+              Study Now
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate(`/course/${course._id}`)}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+            >
+              Buy Now
+            </button>
+          )
         ) : (
           <button
-            onClick={() => navigate('/login')}
-            className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => navigate(`/course/study/${course._id}`)}
+            className="w-full bg-[#4660EC] hover:bg-[#324db0] text-white font-medium py-2 px-4 rounded-lg transition-all"
           >
-            Buy Now
+            Study Now
           </button>
         )}
+      </>
+    ) : (
+      <button
+        onClick={() => navigate("/login")}
+        className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+      >
+        Buy Now
+      </button>
+    )}
 
-        {user && user.role === "admin" && (
-          <button
-            onClick={() => deleteHandler(course._id)} // Call deleteHandler with course ID
-            className="mt-4 w-full bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Delete
-          </button>
-        )}
-      </div>
-    </div>
+    {/* Admin Button */}
+    {user && user.role === "admin" && (
+      <button
+        onClick={() => deleteHandler(course._id)}
+        className="w-full mt-3 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+      >
+        Delete
+      </button>
+    )}
+  </div>
+</motion.div>
+
+
+
   );
 }
 

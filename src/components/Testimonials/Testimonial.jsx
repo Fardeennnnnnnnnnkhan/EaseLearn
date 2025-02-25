@@ -157,63 +157,70 @@ function Testimonial() {
   };
 
   return (
-    <section className='testimonial w-full min-h-auto py-16 flex flex-col items-center'>
-      <h1 className='text-3xl md:text-4xl font-bold mb-10 text-gray-900'>
-        What Our Students Say
-      </h1>
-      <div className='w-full max-w-6xl flex justify-between items-center relative px-4'>
-        <button
-          className='absolute left-[-2rem] md:left-[-4rem] text-gray-500 hover:text-gray-800 transition-all z-10'
-          onClick={handlePrev}
-        >
-          <FaArrowLeft className='w-8 h-8 md:w-10 md:h-10' />
-        </button>
+  <section className="testimonial w-full py-16 bg-gray-50 flex flex-col items-center">
+  <h1 className="text-4xl md:text-5xl font-bold mb-12 text-[#4660EC] tracking-wide">
+    What Our Students Say
+  </h1>
 
-        <div className='w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden'>
-          {/* Only display testimonials based on the screen size */}
-          {testimonialsData
-            .slice(currentIndex, currentIndex + (window.innerWidth < 768 ? 1 : 3))
-            .map((testimonial, index) => (
-              <motion.div
-                className='card bg-white rounded-3xl shadow-xl p-8 flex flex-col items-center text-center transform transition duration-500 hover:scale-105 hover:shadow-2xl'
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-              >
-                <div className='student-image mb-4'>
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className='w-24 h-24 rounded-full object-cover shadow-md ring-4 ring-blue-400'
-                  />
-                </div>
-                <p className='message text-gray-700 mb-4 font-semibold'>
-                  "{testimonial.message}"
-                </p>
-                <div className='info mb-2'>
-                  <p className='font-bold text-xl text-gray-800'>{testimonial.name}</p>
-                  <p className='text-sm text-gray-500'>{testimonial.position}</p>
-                </div>
-                <div className='company flex items-center gap-2'>
-                  <img
-                    src={testimonial.companyLogo}
-                    className='w-12 h-8'
-                  />
-                  <p className='text-sm text-gray-500'>{testimonial.company}</p>
-                </div>
-              </motion.div>
-            ))}
-        </div>
+  <div className="w-full max-w-7xl relative flex items-center">
+    {/* Left Arrow Button */}
+    <button
+      className="absolute left-[-2rem] md:left-[-3rem] text-[#4660EC] hover:text-blue-700 transition-all z-10"
+      onClick={handlePrev}
+    >
+      <FaArrowLeft className="w-10 h-10 md:w-12 md:h-12" />
+    </button>
 
-        <button
-          className='absolute right-[-2rem] md:right-[-4rem] text-gray-500 hover:text-gray-800 transition-all z-10'
-          onClick={handleNext}
-        >
-          <FaArrowRight className='w-8 h-8 md:w-10 md:h-10' />
-        </button>
-      </div>
-    </section>
+    {/* Cards Container */}
+    <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+      {testimonialsData
+        .slice(currentIndex, currentIndex + (window.innerWidth < 768 ? 1 : 3))
+        .map((testimonial, index) => (
+      <motion.div
+  className="card bg-gradient-to-r from-[#0EA5E9] to-[#38BDF8] text-white rounded-3xl shadow-lg p-6 md:p-8 flex flex-col items-center text-center transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+  key={testimonial.id}
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: index * 0.2 }}
+>
+            {/* Student Image */}
+            <div className="student-image mb-6">
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                className="w-24 h-24 rounded-full object-cover shadow-md ring-4 ring-white"
+              />
+            </div>
+
+            {/* Message */}
+            <p className="message italic text-lg mb-6">
+              "{testimonial.message}"
+            </p>
+
+            {/* Student Info */}
+            <div className="info mb-3">
+              <p className="font-bold text-xl">{testimonial.name}</p>
+              <p className="text-sm">{testimonial.position}</p>
+            </div>
+
+            {/* Company Logo */}
+            <div className="company flex items-center gap-2">
+              <img src={testimonial.companyLogo} className="w-12 h-8" alt="" />
+            </div>
+          </motion.div>
+        ))}
+    </div>
+
+    {/* Right Arrow Button */}
+    <button
+      className="absolute right-[-2rem] md:right-[-3rem] text-[#4660EC] hover:text-blue-700 transition-all z-10"
+      onClick={handleNext}
+    >
+      <FaArrowRight className="w-10 h-10 md:w-12 md:h-12" />
+    </button>
+  </div>
+</section>
+
   );
 }
 

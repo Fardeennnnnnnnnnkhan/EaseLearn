@@ -2,65 +2,122 @@ import React, { useState, useEffect } from "react";
 import './Header.css';
 import { NavLink } from 'react-router-dom';
 import { RiMenu3Fill, RiCloseFill } from "react-icons/ri";
-
+import {motion} from 'framer-motion'
 function Header({ isAuth }) {
   const [Isopen, setIsopen] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => {
     setIsopen(!Isopen);
+    document.body.style.overflow = Isopen ? "auto" : "hidden"; // Disable scrolling when navbar is open
   };
-
-  const handleScroll = () => {
-    if (typeof window !== 'undefined') {
-      if (window.scrollY > lastScrollY) {
-        setShowNavbar(false); // Scroll down
-      } else {
-        setShowNavbar(true); // Scroll up
-      }
-      setLastScrollY(window.scrollY);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
 
   return (
-    <div className={`nav h-[10vh] w-full flex justify-between items-center px-10 py-6 bg-white text-black transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+    <div className="w-full flex justify-between items-center px-10 py-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white ">
       <div className="right flex">
-        <h1 className="text-4xl font-semibold text-green-400">EaseLearn</h1>
+        <h1 className="text-4xl font-semibold">
+          Ease<span className="text-yellow-400">Learn</span>
+        </h1>
       </div>
       <div className="left hidden sm:block text-lg tracking-tighter">
-        <div className="links flex gap-4">
-          <NavLink  className="text-xl   " to="/" style={({ isActive }) => ({ color: isActive ? "" : "" })}>Home</NavLink>
-          <NavLink  className="text-xl   " to="/courses" style={({ isActive }) => ({ color: isActive ? "" : "" })}>Courses</NavLink>
-          <NavLink className="text-xl   " to="/about" style={({ isActive }) => ({ color: isActive ? "" : "" })}>About</NavLink>
+        <div className="links flex gap-6">
+          <NavLink
+            className="text-xl font-medium transition-colors duration-200 hover:text-yellow-400"
+            to="/"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            className="text-xl font-medium transition-colors duration-200 hover:text-yellow-400"
+            to="/courses"
+          >
+            Courses
+          </NavLink>
+          <NavLink
+            className="text-xl font-medium transition-colors duration-200 hover:text-yellow-400"
+            to="/about"
+          >
+            About
+          </NavLink>
           {isAuth ? (
-            <NavLink  className="text-xl   " to="/Account" style={({ isActive }) => ({ color: isActive ? "" : "" })}>Account</NavLink>
+            <NavLink
+              className="text-xl font-medium transition-colors duration-200 hover:text-yellow-400"
+              to="/account"
+            >
+              Account
+            </NavLink>
           ) : (
-            <NavLink  className="text-xl   " to="/login" style={({ isActive }) => ({ color: isActive ? "" : "" })}>Login</NavLink>
+            <NavLink
+              className="text-xl font-medium transition-colors duration-200 hover:text-yellow-400"
+              to="/login"
+            >
+              Login
+            </NavLink>
           )}
         </div>
       </div>
+
+      {/* Mobile Navbar */}
       {Isopen ? (
         <>
-          <RiCloseFill onClick={toggleMenu} className="close-icon text-3xl cursor-pointer" />
-          <div className={`fixed h-screen inset-0 bg-blue-400 opacity-95 transition-opacity duration-300 z-30 ${Isopen ? 'open' : 'closed'}`} onClick={toggleMenu}>
-            <div className="flex flex-col p-9 h-full">
-              <NavLink className="text-3xl border-b py-6 border-b-1 border-white" to="/" style={({ isActive }) => ({ color: isActive ? "white" : "" })}>Home</NavLink>
-              <NavLink className="text-3xl border-b py-6 border-b-1 border-white" to="/courses" style={({ isActive }) => ({ color: isActive ? "white" : "" })}>Courses</NavLink>
-              <NavLink className="text-3xl border-b py-6 border-b-1 border-white" to="/about" style={({ isActive }) => ({ color: isActive ? "white" : "" })}>About</NavLink>
-              <NavLink className="text-3xl border-b py-6 border-b-1 border-white" to="/account" style={({ isActive }) => ({ color: isActive ? "white" : "" })}>Account</NavLink>
-            </div>
-          </div>
+          <RiCloseFill
+            onClick={toggleMenu}
+            className="text-3xl text-white cursor-pointer z-50 fixed top-6 right-6"
+          />
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="fixed top-0 right-0 h-screen w-[75vw] sm:w-[50vw] bg-gradient-to-r from-blue-500 to-indigo-600 z-40 flex flex-col justify-center items-start p-8"
+          >
+            <h2 className="text-3xl text-white font-semibold mb-8">
+              Ease<span className="text-yellow-400">Learn</span>
+            </h2>
+            <NavLink
+              className="text-2xl font-medium text-white mb-6 transition-colors duration-200 hover:text-yellow-400"
+              to="/"
+              onClick={toggleMenu}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              className="text-2xl font-medium text-white mb-6 transition-colors duration-200 hover:text-yellow-400"
+              to="/courses"
+              onClick={toggleMenu}
+            >
+              Courses
+            </NavLink>
+            <NavLink
+              className="text-2xl font-medium text-white mb-6 transition-colors duration-200 hover:text-yellow-400"
+              to="/about"
+              onClick={toggleMenu}
+            >
+              About
+            </NavLink>
+            {isAuth ? (
+              <NavLink
+                className="text-2xl font-medium text-white mb-6 transition-colors duration-200 hover:text-yellow-400"
+                to="/account"
+                onClick={toggleMenu}
+              >
+                Account
+              </NavLink>
+            ) : (
+              <NavLink
+                className="text-2xl font-medium text-white mb-6 transition-colors duration-200 hover:text-yellow-400"
+                to="/login"
+                onClick={toggleMenu}
+              >
+                Login
+              </NavLink>
+            )}
+          </motion.div>
         </>
       ) : (
-        <RiMenu3Fill onClick={toggleMenu} className="text-3xl text-black sm:hidden cursor-pointer z-40" />
+        <RiMenu3Fill
+          onClick={toggleMenu}
+          className="text-3xl text-white sm:hidden cursor-pointer z-50"
+        />
       )}
     </div>
   );

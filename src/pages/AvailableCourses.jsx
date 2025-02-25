@@ -3,7 +3,7 @@ import axios from 'axios';
 import { server } from '../main'; 
 import toast from 'react-hot-toast';
 import CourseCard from '../components/CourseCard';
-
+import { motion } from 'framer-motion';
 function AvailableCourses() {
   const [courses, setCourses] = useState([]);
 
@@ -36,18 +36,25 @@ function AvailableCourses() {
   }, []);
 
   return (
-    <div className="container  mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Top Courses</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {courses.length > 0 ? (
-          courses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))
-        ) : (
-          <p>No courses available at the moment.</p>
-        )}
-      </div>
+    <div className="container mx-auto p-6">
+    <motion.h1
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="text-3xl font-bold mb-8 text-[#4660EC] tracking-wide"
+    >
+      Top Courses
+    </motion.h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {courses.length > 0 ? (
+        courses.map((course) => <CourseCard key={course._id} course={course} />)
+      ) : (
+        <p className="text-lg text-gray-500">No courses available at the moment.</p>
+      )}
     </div>
+  </div>
+  
+  
   );
 }
 

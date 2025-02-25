@@ -15,7 +15,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
-      when: 'beforeChildren',
+      when: "beforeChildren",
     },
   },
 };
@@ -25,7 +25,7 @@ const textVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.8, ease: 'easeOut' },
+    transition: { duration: 0.8, ease: "easeOut" },
   },
 };
 
@@ -35,7 +35,7 @@ const imageVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 80,
       damping: 20,
     },
@@ -45,8 +45,9 @@ const imageVariants = {
 const buttonVariants = {
   hover: {
     scale: 1.05,
+    boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
     transition: {
-      duration: 0.2,
+      duration: 0.3,
       yoyo: Infinity,
     },
   },
@@ -55,9 +56,14 @@ const buttonVariants = {
 function Home() {
   const navigate = useNavigate();
 
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
-      <div className="w-full min-h-screen text-black bg-white flex flex-col md:flex-row justify-center items-center">
+      {/* Hero Section with Animated Background */}
+      <div className="w-full min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white flex flex-col md:flex-row justify-center items-center">
         {/* Right Section - Image */}
         <div className="order-1 md:order-2 w-full md:w-[45vw] flex justify-center items-center p-6">
           <motion.div
@@ -83,7 +89,7 @@ function Home() {
             animate="visible"
           >
             {/* Heading */}
-            <motion.h1 className="text-4xl md:text-6xl tracking-tighter leading-none">
+            <motion.h1 className="text-4xl md:text-6xl font-bold tracking-tighter leading-none">
               {["The", "Knowledge", "Base", "That", "Democratizes", "Knowledge"].map(
                 (word, i) => (
                   <motion.span key={i} className="inline-block mr-2" variants={textVariants}>
@@ -96,34 +102,66 @@ function Home() {
             {/* Subheading */}
             <motion.p className="text-lg md:text-2xl mt-4">
               {["Earn,", "Grow,", "Excel", "With", "EaseLearn"].map((word, i) => (
-                <motion.span key={i} className="inline-block mr-2 tracking-wider leading-20" variants={textVariants}>
+                <motion.span
+                  key={i}
+                  className="inline-block mr-2 tracking-wider leading-20"
+                  variants={textVariants}
+                >
                   {word}
                 </motion.span>
               ))}
             </motion.p>
 
-            {/* Button */}
+            {/* CTA Button */}
             <motion.div className="group inline-block mt-8" whileHover="hover">
-              <motion.button
-                onClick={() => navigate('/courses')}
-                className="relative overflow-hidden border px-4 py-2 md:px-6 md:py-3 rounded-full bg-green-600 text-white text-sm md:text-base"
-                variants={buttonVariants}
-              >
-                <span className="absolute inset-0 bg-white transform scale-x-0 origin-left transition-transform duration-700 ease-in group-hover:scale-x-100"></span>
-                <Link to="/courses" className="relative z-10 group-hover:text-black">
-                  Get Started
-                </Link>
-              </motion.button>
+            <motion.button
+  onClick={() => navigate("/courses")}
+  className="relative overflow-hidden px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-bold text-xl text-white md:text-base border-2 border-transparent hover:border-white transition-all duration-300 ease-in-out"
+  variants={buttonVariants}
+>
+  <span className="absolute inset-0 transform scale-x-0 origin-left transition-transform duration-700 ease-in group-hover:scale-x-100 bg-blue-300 opacity-20"></span>
+  <Link to="/courses" className="relative z-10 group-hover:text-yellow-300">
+    Get Started
+  </Link>
+</motion.button>
             </motion.div>
           </motion.div>
         </div>
+        
+      </div>
+       <div className="pt-10">
+        {/* <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="flex justify-center mb-12"
+        >
+          <button
+            onClick={() => scrollToSection("features")}
+            className="px-6 py-3 bg-blue-500 text-white rounded-full text-lg"
+          >
+            Scroll to Features
+          </button>
+        </motion.div> */}
       </div>
 
-      <AvailableCourses />
-      <Features />
-      <Testimonial />
-      <Instructors />
-      <FAQ />
+      {/* Smooth Scroll Section */}
+     
+
+    
+
+      {/* Testimonial Section */}
+<AvailableCourses />
+    <Testimonial/>
+{/* <Features/> */}
+<Instructors/>
+<FAQ/>
+      {/* Footer */}
+      {/* <div className="bg-blue-500 text-white py-8">
+        <div className="container mx-auto text-center">
+          <p>&copy; 2025 EaseLearn. All rights reserved.</p>
+        </div>
+      </div> */}
     </>
   );
 }
